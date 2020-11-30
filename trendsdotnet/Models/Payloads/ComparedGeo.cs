@@ -1,4 +1,4 @@
-﻿namespace trendsdotnet.Models.Payloads
+﻿namespace Trendsdotnet.Models.Payloads
 {
     class ComparedGeo : Payload
     {

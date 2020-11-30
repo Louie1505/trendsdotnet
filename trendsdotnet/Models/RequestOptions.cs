@@ -1,4 +1,4 @@
-﻿namespace trendsdotnet.Models
+﻿namespace Trendsdotnet.Models
 {
     class RequestOptions
     {

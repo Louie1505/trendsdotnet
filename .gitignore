@@ -4,3 +4,6 @@
 
 /trendsdotnet/obj
 /.vs
+/trendsdotnet/bin/Debug/netcoreapp3.1
+/trendstests/bin/Debug/netcoreapp3.1
+/trendstests/obj

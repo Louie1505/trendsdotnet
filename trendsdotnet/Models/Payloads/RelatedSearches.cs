@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace trendsdotnet.Models.Payloads
+namespace Trendsdotnet.Models.Payloads
 {
     class RelatedSearches : Payload
     {

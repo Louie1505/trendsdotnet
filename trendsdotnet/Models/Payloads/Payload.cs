@@ -1,9 +1,11 @@
-﻿namespace trendsdotnet.Models.Payloads
+﻿using System.Collections.Generic;
+
+namespace Trendsdotnet.Models.Payloads
 {
     abstract class Payload
     {
-        public ComparisonItem[] comparisonItem { get; set; }
-        public Restriction restriction { get; set; }
-        public RequestOptions requestOptions { get; set; }
+        public List<ComparisonItem> comparisonItem = new List<ComparisonItem>();
+        public Restriction restriction = new Restriction();
+        public RequestOptions requestOptions = new RequestOptions();
     }
 }
