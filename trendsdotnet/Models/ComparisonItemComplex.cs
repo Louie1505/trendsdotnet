@@ -4,16 +4,27 @@ namespace Trendsdotnet.Models
 {
     class ComparisonItemComplex : IComparisonItem
     {
-        [JsonIgnore]
-        private string _keyword { get; set; }
-        public string keyword { get => _keyword; set { _keyword = value.Replace(" ", "+"); } }
-        public string geo { get; set; }
-        public string time { get; set; }
+        public RestrictionGeo geo { get; set; }
+        public ComplexKeywordsRestriction complexKeywordsRestriction { get; set; }
         public ComparisonItemComplex(string term, string geo)
         {
-            this.keyword = term;
-            this.geo = geo;
-            this.time = "today+12-m";
+            //this.geo = new RestrictionGeo() { country = geo };
+            this.complexKeywordsRestriction = new ComplexKeywordsRestriction(term);
         }
+    }
+    class ComplexKeywordsRestriction 
+    {
+        public ComplexKeyword[] keyword { get; set; }
+        public ComplexKeywordsRestriction(string term)
+        {
+            this.keyword = new ComplexKeyword[] { new ComplexKeyword() { value = term } };
+        }
+    }
+    class ComplexKeyword
+    {
+        public string type { get; set; } = "BROAD";
+        [JsonIgnore]
+        private string _value { get; set; }
+        public string value { get => _value; set { _value = value.Replace(" ", "+"); } }
     }
 }

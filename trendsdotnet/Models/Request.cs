@@ -55,11 +55,11 @@ namespace Trendsdotnet.Models
                 //Don't wanna get stuck in an infinite loop
                 req.Token = "Fake Token";
                 string res = await req.Send();
-                if (string.IsNullOrEmpty(res))
-                    throw new Exception("Unable to authenticate. Trends API may be down.");
                 //Don't care about this response, just hack out the token
-                res = res.Substring(res.IndexOf("\"token\""));
-                this.Token = res.Substring(9, res.IndexOf("\",\"id\"") - 9);
+                res = res?.Substring(res.IndexOf("\"token\""));
+                this.Token = res?.Substring(9, res.IndexOf("\",\"id\"") - 9);
+                if (string.IsNullOrEmpty(this.Token))
+                    throw new Exception("Unable to authenticate. Trends API may be down.");
             }
             var handler = new HttpClientHandler() { CookieContainer = RequestData.Cookies };
             using HttpClient client = new HttpClient(handler);
@@ -75,10 +75,10 @@ namespace Trendsdotnet.Models
                     //TODO - this is horribly inefficient
                     string s = cookies.ElementAt(i).Replace(" ", "");
                     string name = s.Substring(0, s.IndexOf("="));
-                    string val = s.Substring(s.IndexOf("="), s.IndexOf(";") - s.IndexOf("="));
+                    string val = s[s.IndexOf("=")..s.IndexOf(";")];
                     RequestData.Cookies.Add(new Uri("https://www.google.com"), new Cookie(name, val));
                 }
-                if (resp.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                if (resp.StatusCode == HttpStatusCode.TooManyRequests)
                 {
                     return await this.Send();
                 }

@@ -11,7 +11,7 @@ namespace trendstests
         public void InterestOverTimeTest()
         {
             string[] terms = new string[] { "Trump", "Biden" };
-            client.GetInterestOverTime(terms);
+            client.GetInterestOverTime(terms, "WEEK");
         }
     }
 }

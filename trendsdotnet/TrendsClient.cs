@@ -10,18 +10,21 @@ namespace Trendsdotnet
         {
             //TODO
         }
-        public async Task<TimelineData> GetInterestOverTime(string[] terms) 
+        public async Task<TimelineData> GetInterestOverTime(string[] terms, string resolution) 
         {
-            string json = await GetInterestOverTimeJSON(terms);
+            string json = await GetInterestOverTimeJSON(terms, resolution);
             using ResponseParser parser = new ResponseParser();
             return (TimelineData)(await parser.Parse(json));
         }
-        public async Task<string> GetInterestOverTimeJSON(string[] terms)
+        public async Task<string> GetInterestOverTimeJSON(string[] terms, string resolution)
         {
             Models.Payloads.Multiline payload = new Models.Payloads.Multiline();
+            payload.resolution = resolution;
+            payload.locale = "en-US";
+            payload.requestOptions = new RequestOptions() { backend = "IZG", property = string.Empty };
             for (int i = 0; i < terms.Length; i++)
             {
-                payload.comparisonItem.Add(new ComparisonItem(terms[i], "US"));
+                payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
             }
             Request req = new Request(RequestType.Multiline, "en-US", "0", payload);
             return await req.Send();
