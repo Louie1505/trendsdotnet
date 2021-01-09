@@ -1,10 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json.Linq;
+using System.Text.Json.Serialization;
 
 namespace Trendsdotnet.Models
 {
     class ComparisonItemComplex : IComparisonItem
     {
-        public RestrictionGeo geo { get; set; }
+        public JObject geo { get; set; } = new JObject();
         public ComplexKeywordsRestriction complexKeywordsRestriction { get; set; }
         public ComparisonItemComplex(string term, string geo)
         {

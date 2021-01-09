@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using Trendsdotnet;
+using trendsdotnet.Models.Responses;
+using System.Diagnostics;
 
 namespace trendstests
 {
@@ -11,7 +13,8 @@ namespace trendstests
         public void InterestOverTimeTest()
         {
             string[] terms = new string[] { "Trump", "Biden" };
-            client.GetInterestOverTime(terms, "WEEK");
+            TimelineData data = client.GetInterestOverTime(terms, "WEEK").Result;
+            Debug.Assert(data != null, "No data in response object. Likely additional logging above.");
         }
     }
 }

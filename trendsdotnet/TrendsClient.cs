@@ -14,7 +14,7 @@ namespace Trendsdotnet
         {
             string json = await GetInterestOverTimeJSON(terms, resolution);
             using ResponseParser parser = new ResponseParser();
-            return (TimelineData)(await parser.Parse(json));
+            return (TimelineData)(await parser.Parse(json, RequestType.Multiline));
         }
         public async Task<string> GetInterestOverTimeJSON(string[] terms, string resolution)
         {
@@ -26,14 +26,14 @@ namespace Trendsdotnet
             {
                 payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
             }
-            Request req = new Request(RequestType.Multiline, "en-US", "0", payload);
+            Request req = new Request(RequestType.Multiline, "en-US", "0", payload, Request.GetTokenForRequest(terms).Result);
             return await req.Send();
         }
         public async Task<RegionMap> GetInterestByRegion(string[] terms) 
         {
             string json = await GetInterestByRegionJSON(terms);
             using ResponseParser parser = new ResponseParser();
-            return (RegionMap)(await parser.Parse(json));
+            return (RegionMap)(await parser.Parse(json, RequestType.ComparedGeo));
         }
         public async Task<string> GetInterestByRegionJSON(string[] terms) 
         {
@@ -43,7 +43,7 @@ namespace Trendsdotnet
         {
             string json = await GetRelatedQueriesJSON(terms);
             using ResponseParser parser = new ResponseParser();
-            return (RelatedQueries)(await parser.Parse(json));
+            return (RelatedQueries)(await parser.Parse(json, RequestType.RelatedSearches));
         }
         public async Task<string> GetRelatedQueriesJSON(string[] terms) 
         {

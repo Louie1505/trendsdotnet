@@ -17,6 +17,7 @@ namespace Trendsdotnet.Models
         public string Tz { get; set; }
         public Payload Payload { get; set; }
         public string Token { get; set; }
+        public string RequestUrl { get; set; }
         private string URL
         {
             get
@@ -30,42 +31,29 @@ namespace Trendsdotnet.Models
                     case RequestType.Multiline:
                         return "https://trends.google.com/trends/api/widgetdata/multiline";
                     case RequestType.ComparedGeo:
-                        return "https://trends.google.com/trends/api/widgetdata/comparedgeo ";
+                        return "https://trends.google.com/trends/api/widgetdata/comparedgeo";
                     default:
                         return "";
                 }
             }
         }
-        public Request(RequestType type, string hl, string tz, Payload p)
+        public Request(RequestType type, string hl, string tz, Payload p, string token)
         {
             this.Type = type;
             this.Hl = hl;
             this.Tz = tz;
-            this.Token = RequestData.RequestToken;
+            this.Token = token;
             this.Payload = p;
         }
         public async Task<string> Send()
         {
             if (string.IsNullOrEmpty(this.Token))
-            {
-                //Request with no terms returns 400 so just stick a fake one on
-                Models.Payloads.Explore ex = new Models.Payloads.Explore();
-                ex.comparisonItem.Add(new ComparisonItem("term", "US"));
-                Request req = new Request(RequestType.Explore, "en-US", "0", ex);
-                //Don't wanna get stuck in an infinite loop
-                req.Token = "Fake Token";
-                string res = await req.Send();
-                //Don't care about this response, just hack out the token
-                res = res?.Substring(res.IndexOf("\"token\""));
-                this.Token = res?.Substring(9, res.IndexOf("\",\"id\"") - 9);
-                if (string.IsNullOrEmpty(this.Token))
-                    throw new Exception("Unable to authenticate. Trends API may be down.");
-            }
+                throw new Exception("No Auth Token");
             var handler = new HttpClientHandler() { CookieContainer = RequestData.Cookies };
             using HttpClient client = new HttpClient(handler);
             string payload = JsonConvert.SerializeObject(this.Payload);
-            string requestUrl = $"{this.URL}?hl={this.Hl}&tz={this.Tz}&req={payload}&token={this.Token}";
-            var resp = client.GetAsync(requestUrl).Result;
+            this.RequestUrl ??= $"{this.URL}?hl={this.Hl}&tz={this.Tz}&req={payload}&token={this.Token}";  
+            var resp = client.GetAsync(this.RequestUrl).Result;
             //Workaround for too many requests issue
             if (resp != null && resp.Headers.Contains("set-cookie"))
             {
@@ -93,10 +81,30 @@ namespace Trendsdotnet.Models
             }
             return null;
         }
+
+        public static async Task<string> GetTokenForRequest(string[] terms)
+        {
+            //The, I shit you not, actual intended way to get a token is to make an explore request first 
+            //and use any of the 4-8 different tokens returned in your actual request...
+            ComparisonItem[] comparisonItems = new ComparisonItem[terms.Length];
+            for (int i = 0; i < terms.Length; i++)
+            {
+                comparisonItems[i] = new ComparisonItem(terms[i]);
+            }
+            Request req = new Request(RequestType.Explore, "en-US", "0", null, "Fake token please don't throw an exception because I have no token I do it's this string are you happy now");
+            //Can't be fucked writing code for this, but the comparison items HAVE TO be the same as the following request or you get a 401. This API was written by monkeys 🐒
+            req.RequestUrl = $"https://trends.google.com/trends/api/explore?hl=en-US&tz=0&req={{\"comparisonItem\":{JsonConvert.SerializeObject(comparisonItems)},\"category\":0,\"property\":\"\"}}&tz=0";
+            string res = await req.Send();
+            //Don't care about the response, just hack out a token. Not like we have a shortage of them. 
+            res = res?.Substring(res.IndexOf("\"token\""));
+            string token = res?.Substring(9, res.IndexOf("\",\"id\"") - 9);
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("Unable to authenticate. Trends API may be down.");
+            return token;
+        }
     }
     public static class RequestData
     {
-        public static string RequestToken;
         public static CookieContainer Cookies = new CookieContainer();
     }
 }

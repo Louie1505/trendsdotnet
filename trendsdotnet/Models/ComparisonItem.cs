@@ -10,7 +10,7 @@ namespace Trendsdotnet.Models
         public string keyword { get => _keyword; set { _keyword = value.Replace(" ", "+"); } }
         public string geo { get; set; }
         public string time { get; set; }
-        public ComparisonItem(string term, string geo)
+        public ComparisonItem(string term, string geo = "")
         {
             this.keyword = term;
             this.geo = geo;
