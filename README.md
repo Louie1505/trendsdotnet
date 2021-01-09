@@ -17,9 +17,9 @@ Functionality to compare a collection of terms over a timeline, breakdown intere
 #### Store the terms to be compared in a string array
 `string[] terms = new string[] { "Google", "Bing" };`
 
-#### Either retrieve the raw JSON data from the API, to be used as needed.
-`string json = await client.GetInterestOverTimeJSON(terms, "WEEK");`
+#### Either retrieve the raw JSON data from the API, to be used as needed. Dates and resolution are optional, and default the the below.
+`string json = await client.GetInterestOverTimeJSON(terms, DateTime.Now.AddYears(-1), DateTime.Now, Resolution.WEEK);`
 
-#### OR recieve the data parsed into a complex object.
-`TimelineData data = await client.GetInterestOverTime(terms, "WEEK");`
+#### OR recieve the data parsed into a complex object. Dates and resolution are optional, and default the the below.
+`TimelineData data = await client.GetInterestOverTime(terms, DateTime.Now.AddYears(-1), DateTime.Now, Resolution.WEEK);`
 #### TimelineData contains `Averages` which are average relative scores for the terms, and `DataItems` which are data points of the collection in time order. All scores are in the order the terms were entered, ie `data.DataItems[x].Values[0]` is the score of the 1st term and `data.DataItems[x].Values[1]` is the score of the 2nd when comparing 2 terms.
