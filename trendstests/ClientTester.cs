@@ -8,20 +8,36 @@ namespace trendstests
 {
     public class ClientTester
     {
-        TrendsClient client= new TrendsClient();
+        TrendsClient client = new TrendsClient();
+
         [Fact]
         public void InterestOverTimeTest()
         {
-            string[] terms = new string[] { "Trump", "Biden" };
-            TimelineData data = client.GetInterestOverTime(terms, "WEEK").Result;
+            string[] terms = new string[] { "Google", "Bing" };
+            TimelineData data = client.GetInterestOverTime(terms).Result;
             Debug.Assert(data != null, "No data in response object. Likely additional logging above.");
         }
 
         [Fact]
         public void InterestOverTimeJSONTest()
         {
-            string[] terms = new string[] { "Trump", "Biden" };
-            string json = client.GetInterestOverTimeJSON(terms, "WEEK").Result;
+            string[] terms = new string[] { "Google", "Bing" };
+            string json = client.GetInterestOverTimeJSON(terms).Result;
+        }
+
+        [Fact]
+        public void InterestByRegionTest()
+        {
+            string[] terms = new string[] { "Google", "Bing" };
+            RegionMap map = client.GetInterestByRegion(terms, Resolution.COUNTRY, DataMode.PERCENTAGES).Result;
+            Debug.Assert(map != null, "No data in response object. Likely additional logging above.");
+        }
+
+        [Fact]
+        public void InterestByRegionJSONTest()
+        {
+            string[] terms = new string[] { "Google", "Bing" };
+            string json = client.GetInterestByRegionJSON(terms, Resolution.COUNTRY, DataMode.PERCENTAGES).Result;
         }
     }
 }

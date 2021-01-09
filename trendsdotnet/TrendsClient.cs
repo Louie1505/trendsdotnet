@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using trendsdotnet.Models.Responses;
 using Trendsdotnet.Models;
@@ -7,30 +8,26 @@ namespace Trendsdotnet
 {
     public class TrendsClient
     {
-        /// <summary>
-        /// Need to know what the start of the JSON is, depends what request type we're parsing
-        /// </summary>
+        // Need to know what the start of the JSON is, depends what request type we're parsing
         private Dictionary<RequestType, string> reqTypeJsonMap = new Dictionary<RequestType, string>
         {
             { RequestType.Explore, "\"widgets\"" },
-            { RequestType.Multiline, "\"default\"" }
+            { RequestType.Multiline, "\"default\"" },
+            { RequestType.ComparedGeo, "\"default\"" }
         };
-        public TrendsClient()
+        public async Task<TimelineData> GetInterestOverTime(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.WEEK) 
         {
-            //TODO
-        }
-        public async Task<TimelineData> GetInterestOverTime(string[] terms, string resolution) 
-        {
-            string json = await GetInterestOverTimeJSON(terms, resolution);
+            string json = await GetInterestOverTimeJSON(terms, fromDate, toDate, resolution);
             using ResponseParser parser = new ResponseParser();
             return (TimelineData)(await parser.Parse(json, RequestType.Multiline));
         }
-        public async Task<string> GetInterestOverTimeJSON(string[] terms, string resolution)
+        public async Task<string> GetInterestOverTimeJSON(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.WEEK)
         {
             Models.Payloads.Multiline payload = new Models.Payloads.Multiline();
             payload.resolution = resolution;
             payload.locale = "en-US";
             payload.requestOptions = new RequestOptions() { backend = "IZG", property = string.Empty };
+            payload.time = $"{(fromDate ?? DateTime.Now.AddYears(-1)).ToString("yyyy-MM-dd")}+{(toDate ?? DateTime.Now).ToString("yyyy-MM-dd")}";
             for (int i = 0; i < terms.Length; i++)
             {
                 payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
@@ -39,15 +36,26 @@ namespace Trendsdotnet
             string json = await req.Send();
             return json.Substring(json.IndexOf(reqTypeJsonMap[RequestType.Multiline]) - 1);
         }
-        public async Task<RegionMap> GetInterestByRegion(string[] terms) 
+        public async Task<RegionMap> GetInterestByRegion(string[] terms, string resolution = Resolution.COUNTRY, string dataMode = DataMode.PERCENTAGES) 
         {
-            string json = await GetInterestByRegionJSON(terms);
+            string json = await GetInterestByRegionJSON(terms, resolution, dataMode);
             using ResponseParser parser = new ResponseParser();
             return (RegionMap)(await parser.Parse(json, RequestType.ComparedGeo));
         }
-        public async Task<string> GetInterestByRegionJSON(string[] terms) 
+        public async Task<string> GetInterestByRegionJSON(string[] terms, string resolution = Resolution.COUNTRY, string dataMode = DataMode.PERCENTAGES) 
         {
-            return null;
+            Models.Payloads.ComparedGeo payload = new Models.Payloads.ComparedGeo();
+            payload.resolution = resolution;
+            payload.locale = "en-US";
+            payload.requestOptions = new RequestOptions() { backend = "IZG", property = string.Empty };
+            payload.dataMode = dataMode;
+            for (int i = 0; i < terms.Length; i++)
+            {
+                payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
+            }
+            Request req = new Request(RequestType.ComparedGeo, "en-US", "0", payload, Request.GetTokenForRequest(terms).Result);
+            string json = await req.Send();
+            return json.Substring(json.IndexOf(reqTypeJsonMap[RequestType.ComparedGeo]) - 1);
         }
         public async Task<RelatedQueries> GetRelatedQueries(string[] terms) 
         {
@@ -59,5 +67,15 @@ namespace Trendsdotnet
         {
             return null;
         }
+    }
+    public class Resolution 
+    {
+        public const string MONTH = "MONTH";
+        public const string WEEK = "WEEK";
+        public const string COUNTRY = "COUNTRY";
+    }
+    public class DataMode
+    {
+        public const string PERCENTAGES = "PERCENTAGES";
     }
 }
