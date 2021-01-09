@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using trendsdotnet.Models.Responses;
 using Trendsdotnet.Models;
 
@@ -6,6 +7,14 @@ namespace Trendsdotnet
 {
     public class TrendsClient
     {
+        /// <summary>
+        /// Need to know what the start of the JSON is, depends what request type we're parsing
+        /// </summary>
+        private Dictionary<RequestType, string> reqTypeJsonMap = new Dictionary<RequestType, string>
+        {
+            { RequestType.Explore, "\"widgets\"" },
+            { RequestType.Multiline, "\"default\"" }
+        };
         public TrendsClient()
         {
             //TODO
@@ -27,7 +36,8 @@ namespace Trendsdotnet
                 payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
             }
             Request req = new Request(RequestType.Multiline, "en-US", "0", payload, Request.GetTokenForRequest(terms).Result);
-            return await req.Send();
+            string json = await req.Send();
+            return json.Substring(json.IndexOf(reqTypeJsonMap[RequestType.Multiline]) - 1);
         }
         public async Task<RegionMap> GetInterestByRegion(string[] terms) 
         {

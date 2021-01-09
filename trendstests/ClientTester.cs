@@ -16,5 +16,12 @@ namespace trendstests
             TimelineData data = client.GetInterestOverTime(terms, "WEEK").Result;
             Debug.Assert(data != null, "No data in response object. Likely additional logging above.");
         }
+
+        [Fact]
+        public void InterestOverTimeJSONTest()
+        {
+            string[] terms = new string[] { "Trump", "Biden" };
+            string json = client.GetInterestOverTimeJSON(terms, "WEEK").Result;
+        }
     }
 }
