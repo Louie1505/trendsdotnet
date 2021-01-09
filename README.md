@@ -22,4 +22,4 @@ Functionality to compare a collection of terms over a timeline, breakdown intere
 
 #### OR recieve the data parsed into a complex object.
 `TimelineData data = await client.GetInterestOverTime(terms, "WEEK");`
-#### TimelineData contains `Averages` which are average relative scores for the terms, and DataItems which are data points of the collection in time order. All scores are in the order the terms were entered, ie data.DataItems[x].Values[0] is the score of the 1st term and data.DataItems[x].Values[1] is the score of the 2nd when comparing 2 terms.
+#### TimelineData contains `Averages` which are average relative scores for the terms, and `DataItems` which are data points of the collection in time order. All scores are in the order the terms were entered, ie `data.DataItems[x].Values[0]` is the score of the 1st term and `data.DataItems[x].Values[1]` is the score of the 2nd when comparing 2 terms.
