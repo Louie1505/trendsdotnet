@@ -5,13 +5,13 @@ namespace Trendsdotnet.Models.Payloads
 {
     abstract class Payload
     {
-        [JsonProperty(Order = 4)]
+        [JsonProperty(Order = 5)]
         public List<IComparisonItem> comparisonItem = new List<IComparisonItem>();
 
-        //[JsonProperty(Order = 5)]
+        //[JsonProperty(Order = 6)]
         //public Restriction restriction = new Restriction();
 
-        [JsonProperty(Order = 6)]
+        [JsonProperty(Order = 8)]
         public RequestOptions requestOptions = new RequestOptions();
     }
 }

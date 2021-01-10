@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trendsdotnet;
+﻿using Trendsdotnet;
 
 namespace trendsdotnet.Models.Responses
 {

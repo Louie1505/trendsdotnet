@@ -23,13 +23,14 @@ namespace trendstests
         {
             string[] terms = new string[] { "Google", "Bing" };
             string json = client.GetInterestOverTimeJSON(terms).Result;
+            Debug.Assert(!string.IsNullOrEmpty(json), "Response JSON is empty, likely additional logging above");
         }
 
         [Fact]
         public void InterestByRegionTest()
         {
             string[] terms = new string[] { "Google", "Bing" };
-            RegionMap map = client.GetInterestByRegion(terms, Resolution.COUNTRY, DataMode.PERCENTAGES).Result;
+            RegionMap map = client.GetInterestByRegion(terms).Result;
             Debug.Assert(map != null, "No data in response object. Likely additional logging above.");
         }
 
@@ -37,7 +38,8 @@ namespace trendstests
         public void InterestByRegionJSONTest()
         {
             string[] terms = new string[] { "Google", "Bing" };
-            string json = client.GetInterestByRegionJSON(terms, Resolution.COUNTRY, DataMode.PERCENTAGES).Result;
+            string json = client.GetInterestByRegionJSON(terms).Result;
+            Debug.Assert(!string.IsNullOrEmpty(json), "Response JSON is empty, likely additional logging above");
         }
     }
 }
