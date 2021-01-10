@@ -6,7 +6,7 @@ using Trendsdotnet.Models;
 
 namespace Trendsdotnet
 {
-    public class TrendsClient
+    public class TrendsClient : IDisposable
     {
         // Need to know what the start of the JSON is, depends what request type we're parsing
         private readonly Dictionary<RequestType, string> reqTypeJsonMap = new Dictionary<RequestType, string>
@@ -72,6 +72,11 @@ namespace Trendsdotnet
         public async Task<string> GetRelatedQueriesJSON(string[] terms)
         {
             return null;
+        }
+
+        public void Dispose()
+        {
+            //TODO
         }
     }
     public class Resolution
