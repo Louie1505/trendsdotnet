@@ -16,6 +16,7 @@ namespace Trendsdotnet
 
         public async Task<IResponse> Parse(string json, RequestType type)
         {
+            JObject jobj;
             switch (type)
             {
                 case RequestType.Explore:
@@ -23,10 +24,11 @@ namespace Trendsdotnet
                 case RequestType.RelatedSearches:
                     break;
                 case RequestType.Multiline:
-                    JObject jobj = JObject.Parse(json);
-                    return jobj["default"].ToObject<TimelineData>();
+                    jobj = JObject.Parse(json);
+                    return jobj["default"].ToObject<InterestTimeline>();
                 case RequestType.ComparedGeo:
-                    break;
+                    jobj = JObject.Parse(json);
+                    return jobj["default"].ToObject<RegionInterestMap>();
                 default:
                     return null;
             }

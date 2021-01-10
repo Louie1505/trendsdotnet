@@ -16,11 +16,11 @@ namespace Trendsdotnet
             { RequestType.ComparedGeo, "\"default\"" }
         };
 
-        public async Task<TimelineData> GetInterestOverTime(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.WEEK)
+        public async Task<InterestTimeline> GetInterestOverTime(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.WEEK)
         {
             string json = await GetInterestOverTimeJSON(terms, fromDate, toDate, resolution);
             using ResponseParser parser = new ResponseParser();
-            return (TimelineData)(await parser.Parse(json, RequestType.Multiline));
+            return (InterestTimeline)(await parser.Parse(json, RequestType.Multiline));
         }
 
         public async Task<string> GetInterestOverTimeJSON(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.WEEK)
@@ -39,11 +39,11 @@ namespace Trendsdotnet
             return json?.Substring(json.IndexOf(reqTypeJsonMap[RequestType.Multiline]) - 1);
         }
 
-        public async Task<RegionMap> GetInterestByRegion(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.COUNTRY, string dataMode = DataMode.PERCENTAGES)
+        public async Task<RegionInterestMap> GetInterestByRegion(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.COUNTRY, string dataMode = DataMode.PERCENTAGES)
         {
             string json = await GetInterestByRegionJSON(terms, fromDate, toDate, resolution, dataMode);
             using ResponseParser parser = new ResponseParser();
-            return (RegionMap)(await parser.Parse(json, RequestType.ComparedGeo));
+            return (RegionInterestMap)(await parser.Parse(json, RequestType.ComparedGeo));
         }
 
         public async Task<string> GetInterestByRegionJSON(string[] terms, DateTime? fromDate = null, DateTime? toDate = null, string resolution = Resolution.COUNTRY, string dataMode = DataMode.PERCENTAGES)

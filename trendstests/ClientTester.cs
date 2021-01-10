@@ -14,7 +14,7 @@ namespace trendstests
         public void InterestOverTimeTest()
         {
             string[] terms = new string[] { "Google", "Bing" };
-            TimelineData data = client.GetInterestOverTime(terms).Result;
+            InterestTimeline data = client.GetInterestOverTime(terms).Result;
             Debug.Assert(data != null, "No data in response object. Likely additional logging above.");
         }
 
@@ -30,7 +30,7 @@ namespace trendstests
         public void InterestByRegionTest()
         {
             string[] terms = new string[] { "Google", "Bing" };
-            RegionMap map = client.GetInterestByRegion(terms).Result;
+            RegionInterestMap map = client.GetInterestByRegion(terms).Result;
             Debug.Assert(map != null, "No data in response object. Likely additional logging above.");
         }
 

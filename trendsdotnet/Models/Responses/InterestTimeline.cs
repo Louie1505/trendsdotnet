@@ -3,7 +3,7 @@ using Trendsdotnet;
 
 namespace trendsdotnet.Models.Responses
 {
-    public class TimelineData : IResponse
+    public class InterestTimeline : IResponse
     {
         [JsonProperty("timelineData")]
         public TimelineDataItem[] DataItems { get; set; }
