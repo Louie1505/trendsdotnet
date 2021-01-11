@@ -15,7 +15,7 @@ namespace Trendsdotnet.Models
         public RequestType Type { get; set; }
         public string Hl { get; set; }
         public string Tz { get; set; }
-        public Payload Payload { get; set; }
+        public IPayload Payload { get; set; }
         public string Token { get; set; }
         public string RequestUrl { get; set; }
         private string URL
@@ -37,7 +37,7 @@ namespace Trendsdotnet.Models
                 }
             }
         }
-        public Request(RequestType type, string hl, string tz, Payload p, string token)
+        public Request(RequestType type, string hl, string tz, IPayload p, string token)
         {
             this.Type = type;
             this.Hl = hl;

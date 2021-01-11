@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 
-namespace Trendsdotnet.Models
+namespace Trendsdotnet.Models.ComparisonItems
 {
-    class ComparisonItemGeo : IComparisonItem
+    class Geo : IComparisonItem
     {
         [JsonProperty(Order = 1)]
         public string time { get; set; }
         [JsonProperty(Order = 2)]
         public GeoKeywordsRestriction complexKeywordsRestriction { get; set; }
-        public ComparisonItemGeo(string term, string geo)
+        public Geo(string term, string geo)
         {
             //this.geo = new RestrictionGeo() { country = geo };
             this.complexKeywordsRestriction = new GeoKeywordsRestriction(term);

@@ -54,4 +54,4 @@ Example usages
 
 #### OR recieve the data parsed into a complex object. All parameters but terms are optional, and default the the below.
 `RegionInterestMap data = await client.GetInterestOverTime(terms, DateTime.Parse("2004-01-01"), DateTime.Now, Resolution.COUNTRY, DataMode.PERCENTAGES);`
-#### RegionInterestMap contains 'MapData' with a collection of 'RegionData' data points, each of which contains the `RegionCode` and `RegionName`, as well as `Values` which are average relative scores for the terms. All scores are in the order the terms were entered.
+#### RegionInterestMap contains `MapData` with a collection of `RegionData` data points, each of which contains the `RegionCode` and `RegionName`, as well as `Values` which are average relative scores for the terms. All scores are in the order the terms were entered.

@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Text.Json.Serialization;
 
-namespace Trendsdotnet.Models
+namespace Trendsdotnet.Models.ComparisonItems
 {
-    class ComparisonItemComplex : IComparisonItem
+    class Multiline : IComparisonItem
     {
         public JObject geo { get; set; } = new JObject();
         public ComplexKeywordsRestriction complexKeywordsRestriction { get; set; }
-        public ComparisonItemComplex(string term, string geo)
+        public Multiline(string term, string geo)
         {
             //this.geo = new RestrictionGeo() { country = geo };
             this.complexKeywordsRestriction = new ComplexKeywordsRestriction(term);

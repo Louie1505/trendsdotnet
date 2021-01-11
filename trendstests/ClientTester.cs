@@ -41,5 +41,19 @@ namespace trendstests
             string json = client.GetInterestByRegionJSON(terms).Result;
             Debug.Assert(!string.IsNullOrEmpty(json), "Response JSON is empty, likely additional logging above");
         }
+
+        [Fact]
+        public void RelatedQueriesTest()
+        {
+            RelatedQueries map = client.GetRelatedQueries("Google").Result;
+            Debug.Assert(map != null, "No data in response object. Likely additional logging above.");
+        }
+
+        [Fact]
+        public void RelatedQueriesJSONTest()
+        {
+            string json = client.GetRelatedQueriesJSON("Google").Result;
+            Debug.Assert(!string.IsNullOrEmpty(json), "Response JSON is empty, likely additional logging above");
+        }
     }
 }

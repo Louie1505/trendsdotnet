@@ -32,7 +32,7 @@ namespace Trendsdotnet
             payload.time = $"{fromDate ?? DateTime.Now.AddYears(-1):yyyy-MM-dd}+{toDate ?? DateTime.Now:yyyy-MM-dd}";
             for (int i = 0; i < terms.Length; i++)
             {
-                payload.comparisonItem.Add(new ComparisonItemComplex(terms[i], "US"));
+                payload.comparisonItem.Add(new Models.ComparisonItems.Multiline(terms[i], "US"));
             }
             Request req = new Request(RequestType.Multiline, "en-US", "0", payload, Request.GetTokenForRequest(terms, RequestType.Multiline).Result);
             string json = await req.Send();
@@ -55,23 +55,30 @@ namespace Trendsdotnet
             payload.dataMode = dataMode;
             for (int i = 0; i < terms.Length; i++)
             {
-                payload.comparisonItem.Add(new ComparisonItemGeo(terms[i], "US") { time = $"{fromDate ?? DateTime.Parse("2004-01-01"):yyyy-MM-dd}+{toDate ?? DateTime.Now:yyyy-MM-dd}"});
+                payload.comparisonItem.Add(new Models.ComparisonItems.Geo(terms[i], "US") { time = $"{fromDate ?? DateTime.Parse("2004-01-01"):yyyy-MM-dd}+{toDate ?? DateTime.Now:yyyy-MM-dd}"});
             }
             Request req = new Request(RequestType.ComparedGeo, "en-US", "0", payload, Request.GetTokenForRequest(terms, RequestType.ComparedGeo).Result);
             string json = await req.Send();
             return json?.Substring(json.IndexOf(reqTypeJsonMap[RequestType.ComparedGeo]) - 1);
         }
 
-        public async Task<RelatedQueries> GetRelatedQueries(string[] terms)
+        public async Task<RelatedQueries> GetRelatedQueries(string term, DateTime? fromDate = null, DateTime? toDate = null)
         {
-            string json = await GetRelatedQueriesJSON(terms);
+            string json = await GetRelatedQueriesJSON(term, fromDate, toDate);
             using ResponseParser parser = new ResponseParser();
             return (RelatedQueries)(await parser.Parse(json, RequestType.RelatedSearches));
         }
 
-        public async Task<string> GetRelatedQueriesJSON(string[] terms)
+        public async Task<string> GetRelatedQueriesJSON(string term, DateTime? fromDate = null, DateTime? toDate = null)
         {
-            return null;
+            Models.Payloads.RelatedQueries payload = new Models.Payloads.RelatedQueries();
+            payload.requestOptions = new RequestOptions() { backend = "IZG", property = string.Empty };
+            payload.restriction = new Models.Payloads.RelatedSearchesRestriction();
+            payload.restriction.complexKeywordsRestriction = new Models.ComparisonItems.RelatedQueries(term);
+            payload.restriction.time = $"{fromDate ?? DateTime.Parse("2004-01-01"):yyyy-MM-dd}+{toDate ?? DateTime.Now:yyyy-MM-dd}";
+            Request req = new Request(RequestType.RelatedSearches, "en-US", "0", payload, Request.GetTokenForRequest(new string[] { term }, RequestType.RelatedSearches).Result);
+            string json = await req.Send();
+            return json?.Substring(json.IndexOf(reqTypeJsonMap[RequestType.RelatedSearches]) - 1);
         }
 
         public void Dispose()
