@@ -22,7 +22,8 @@ namespace Trendsdotnet
                 case RequestType.Explore:
                     break;
                 case RequestType.RelatedSearches:
-                    break;
+                    jobj = JObject.Parse(json);
+                    return jobj["default"]["rankedList"][0].ToObject<RankedQueryList>();
                 case RequestType.Multiline:
                     jobj = JObject.Parse(json);
                     return jobj["default"].ToObject<InterestTimeline>();

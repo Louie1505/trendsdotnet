@@ -91,7 +91,7 @@ namespace Trendsdotnet.Models
             {
                 ComparisonItem item = new ComparisonItem(terms[i]);
                 //I have no idea why I have to do this
-                if (type == RequestType.ComparedGeo)
+                if (type == RequestType.ComparedGeo || type == RequestType.RelatedSearches)
                     item.time = "all";
 
                 comparisonItems[i] = item;
@@ -111,7 +111,11 @@ namespace Trendsdotnet.Models
                 case RequestType.ComparedGeo:
                     res = res?.Substring(res.IndexOf("\"token\"") + 55);
                     break;
+                //I could do this better, but I don't think that would as effectively highlight how stupid this auth system is.
                 case RequestType.RelatedSearches:
+                    res = res?.Substring(res.IndexOf("\"token\"") + 55);
+                    res = res?.Substring(res.IndexOf("\"token\"") + 55);
+                    res = res?.Substring(res.IndexOf("\"token\"") + 55);
                     break;
             }
 

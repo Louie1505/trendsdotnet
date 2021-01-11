@@ -45,7 +45,7 @@ namespace trendstests
         [Fact]
         public void RelatedQueriesTest()
         {
-            RelatedQueries map = client.GetRelatedQueries("Google").Result;
+            RankedQueryList map = client.GetRelatedQueries("Google").Result;
             Debug.Assert(map != null, "No data in response object. Likely additional logging above.");
         }
 
