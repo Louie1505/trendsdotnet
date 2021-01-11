@@ -55,3 +55,13 @@ Example usages
 #### OR recieve the data parsed into a complex object. All parameters but terms are optional, and default the the below.
 `RegionInterestMap data = await client.GetInterestOverTime(terms, DateTime.Parse("2004-01-01"), DateTime.Now, Resolution.COUNTRY, DataMode.PERCENTAGES);`
 #### RegionInterestMap contains `MapData` with a collection of `RegionData` data points, each of which contains the `RegionCode` and `RegionName`, as well as `Values` which are average relative scores for the terms. All scores are in the order the terms were entered.
+
+### __Related Queries__
+
+#### One term per request so no need to create an array of terms
+#### Either retrieve the raw JSON data from the API, to be used as needed. Dates are optional, and default to the below.
+`string json = await client.GetRelatedQueriesJSON("Google", DateTime.Parse("2004-01-01"), DateTime.Now);`
+
+#### OR recieve the data parsed into a complex object. Dates are optional, and default to the below.
+`RankedQueryList data = await client.GetRelatedQueries("Google", DateTime.Parse("2004-01-01"), DateTime.Now);`
+#### RankedQueryList contains `Keywords` which is array of `Keyword`s, each of which contains the `Query` and a `Value` which is a relative score for the term. 
