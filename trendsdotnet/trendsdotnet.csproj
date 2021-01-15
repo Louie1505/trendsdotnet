@@ -3,11 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Unofficial C# wrapper around the Google Trends API (https://trends.google.com/). Handles authentication and returns data either in a complex object or as the raw JSON returned from the API. Functionality to compare a collection of terms over a timeline, breakdown interest in terms by region, or retrieve top related queries (ie search suggestions) for a set of terms.</Description>
+    <Description>Unofficial C# wrapper around the Google Trends API (https://trends.google.com/). Handles authentication and returns data either in a complex object or as the raw JSON returned from the API. Functionality to compare a collection of terms over a timeline, breakdown interest in terms by region, or retrieve top related queries (ie search suggestions) for a set of terms. View on GitHub for documentation: https://github.com/Louie1505/trendsdotnet. </Description>
     <PackageProjectUrl>https://github.com/Louie1505/trendsdotnet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Louie1505/trendsdotnet</RepositoryUrl>
     <PackageTags>google, trends, google trends</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>Louie1505</Authors>
+    <Company>Louie1505</Company>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,6 +6,13 @@ Functionality to compare a collection of terms over a timeline, breakdown intere
 
 ---
 
+Installation
+------
+
+Install via PMC: `Install-Package trendsdotnet` or by browsing for `trendsdotnet` in Nuget package manager.
+
+View on Nuget: https://www.nuget.org/packages/trendsdotnet
+
 Endpoint Descriptions (Taken from Google Trends)
 ------
 
