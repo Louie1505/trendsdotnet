@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
-using trendsdotnet.Models.Responses;
 using Trendsdotnet.Models;
+using Trendsdotnet.Models.Responses;
 
 namespace Trendsdotnet
 {

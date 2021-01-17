@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Trendsdotnet;
 
-namespace trendsdotnet.Models.Responses
+namespace Trendsdotnet.Models.Responses
 {
     public class RankedQueryList : IResponse
     {
