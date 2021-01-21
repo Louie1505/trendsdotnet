@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 using Trendsdotnet;
-using trendsdotnet.Models.Responses;
+using Trendsdotnet.Models.Responses;
 using System.Diagnostics;
 
 namespace trendstests
